@@ -2,15 +2,12 @@ import string
 
 def word_counter(the_word, text):
     counter = 0
-    the_word_clean = 
-the_word.lower().strip(string.punctuation)
+    the_word_clean = the_word.lower().strip(string.punctuation)
     
     for word in text.split():
-        word_cleaned = 
-word.lower().strip(string.punctuation)
+        word_cleaned = word.lower().strip(string.punctuation)
         
-        if word_cleaned == 
-the_word_clean:
+        if word_cleaned == the_word_clean:
             counter += 1
             
     return counter
@@ -37,31 +34,45 @@ def main():
     print("=========================")
     
     while True: 
-        print("Type 0 to exit") 
-        print("Put your text here:\n")  
-        text = input()
+        print("1. Type the text")
+        print("2. Read from file")
+        print("0. Exit")
+        choice = input()
         
-        if text.isdigit() and int(text) 
-== 0:
+        if choice.isdigit() and int(choice) == 0:
             break
+            
+        elif choice.isdigit() and int(choice) == 1:
+            text = input("\nPut your text: ")
         
-        print(f"\nLength: 
-{calc_length(text)}")
-        print(f"Word: 
-{calc_words(text)}")
-        print(f"Characters: 
-{calc_length_no_space(text)}")
+        elif choice.isdigit() and int(choice) == 2:
+            source = input("\nPut the file name here: ")
+            with open(source, "r") as file:
+                text = file.read()
+                print(f"\n{text}")
         
-        print("\nType 1 if you want to 
-search for a word")
+        else:
+            print("\nInput tidak valid!")
+            continue
+        
+        length = calc_length(text)
+        word = calc_words(text)
+        character = calc_length_no_space(text)
+        
+        with open("report.txt", "w") as file:
+            file.write(f"Length: {length}\n")
+            file.write(f"Words: {word}\n")
+            file.write(f"Characters: {character}\n")
+        
+        print("\nType 1 if you want to search for a word")
         opt = input()
         
-        if opt.isdigit() and int(opt) == 
-1:
-            wanted_word = 
-input("\nWanted word: ").lower()
-            print(f"{word_counter(wanted_word, 
-text)}")
+        if opt.isdigit() and int(opt) == 1:
+            wanted_word = input("\nWanted word: ").lower()
+            
+            num_of_word = word_counter(wanted_word, text)
+            with open("report.txt", "a") as file:
+                file.write(f"Occurences({wanted_word}): {num_of_word}")
         
         print()
         
